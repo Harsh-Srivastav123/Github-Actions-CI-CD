@@ -14,11 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: stop old container
+      run: sudo docker container stop static-webpage-container || true
+    - name: Delete old container 
+      run: sudo docker container rm static-webpage-container|| true
     - name: Delete old image 
       run:  sudo docker image rm static-webpage || true
     - name: Build the Docker image
       run: sudo docker build -t static-webpage .
     - name: Run docker image
-      run: sudo docker run -d -p 8080:80 static-webpage
+      run: sudo docker run -d -p 8080:80 --name static-webpage-container static-webpage
 
 
